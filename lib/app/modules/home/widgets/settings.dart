@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stays_go/app/theme/app_theme.dart';
 
 class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromRGBO(0, 23, 30, 1),
+      color: appThemeData.backgroundColor,
       alignment: Alignment.center,
       child: Column(
         children: [
           SizedBox(height: Get.height / 10),
-          Icon(Icons.person_pin, size: Get.height / 5,color: Colors.blue),
+          Icon(Icons.person_pin, size: Get.height / 5,color: appThemeData.buttonColor),
           Text("myUsername",style: TextStyle(color: Colors.white)),
           SizedBox(height: Get.height / 6),
           ElevatedButton(

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:stays_go/app/data/model/evaluation_model.dart';
 import 'package:stays_go/app/modules/home/widgets/evaluations.dart';
 import 'package:stays_go/app/modules/home/widgets/settings.dart';
 import 'package:stays_go/app/modules/home/widgets/map.dart';
@@ -12,6 +13,10 @@ class HomeController extends GetxController {
   void onInit() {
     _loadMapStyles();
     makers.add(marker);
+    myEvalutations.add(e1);
+    myEvalutations.add(e2);
+    myEvalutations.add(e2);
+    myEvalutations.add(e2);
     super.onInit();
   }
 
@@ -42,4 +47,19 @@ class HomeController extends GetxController {
   );
   double lat = 41.5465981;
   double long = -8.41987;
+
+  //Evaluations
+  List<Evaluation> myEvalutations = <Evaluation>[];
+  Evaluation e1 = new Evaluation(
+      hotelName: "Meliã",
+      stars: "5",
+      date: "10/10/2000",
+      text: "horrível",
+      hotelImagePath: "");
+  Evaluation e2 = new Evaluation(
+      hotelName: "Meliã2",
+      stars: "3",
+      date: "10/20/2010",
+      text: "bom",
+      hotelImagePath: "");
 }
