@@ -1,7 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.stays_go">
+    package="com.grupo14.stays_go">
+      
+    <uses-permission android:name="android.permission.INTERNET" />
+    
    <application
-        android:label="stays_go"
+        android:label="Stays GO"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
               android:value="AIzaSyC9H2yy41Arl9kNTZQucJTMHSBCAO2cKVE"/>

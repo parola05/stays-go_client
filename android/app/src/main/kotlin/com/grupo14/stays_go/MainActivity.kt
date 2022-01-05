@@ -1,4 +1,4 @@
-package com.example.stays_go
+package com.grupo14.stays_go
 
 import io.flutter.embedding.android.FlutterActivity
 
