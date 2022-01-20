@@ -1,4 +1,5 @@
 class Evaluation {
+  late String user;
   late String hotelName;
   late String stars;
   late String date;
@@ -6,10 +7,11 @@ class Evaluation {
   late String hotelImagePath;
 
   Evaluation({
-    required this.hotelName,
-    required this.stars,
-    required this.date,
-    required this.text,
-    required this.hotelImagePath
+      required this.user,
+      required this.hotelName,
+      required this.stars,
+      required this.date,
+      required this.text,
+      required this.hotelImagePath
   });
 }
