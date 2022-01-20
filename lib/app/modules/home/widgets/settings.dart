@@ -24,6 +24,7 @@ class Settings extends StatelessWidget {
               ),
             ),
             style: ElevatedButton.styleFrom(
+              primary: appThemeData.buttonColor,
               shape: StadiumBorder(),
               fixedSize: Size(Get.width * 0.8, Get.height * 0.06),
             ),
@@ -39,6 +40,7 @@ class Settings extends StatelessWidget {
               ),
             ),
             style: ElevatedButton.styleFrom(
+              primary: appThemeData.buttonColor,
               shape: StadiumBorder(),
               fixedSize: Size(Get.width * 0.8, Get.height * 0.06),
             ),
@@ -54,6 +56,7 @@ class Settings extends StatelessWidget {
               ),
             ),
             style: ElevatedButton.styleFrom(
+              primary: appThemeData.buttonColor,
               shape: StadiumBorder(),
               fixedSize: Size(Get.width * 0.8, Get.height * 0.06),
             ),

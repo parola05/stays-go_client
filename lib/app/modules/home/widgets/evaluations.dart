@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stays_go/app/data/base_url.dart';
 import 'package:stays_go/app/data/model/evaluation_model.dart';
 import 'package:stays_go/app/modules/home/home_controller.dart';
 import 'package:stays_go/app/theme/app_theme.dart';
@@ -43,16 +44,13 @@ class Evaluations extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Container(
-                                  color: appThemeData.buttonColor,
-                                  height: Get.height / 4,
-                                  width: Get.width / 4,
-                                ),
+                                Image.network(baseUrl + "/" + eval.hotelImagePath,scale:7.5),
                                 SizedBox(width: 15,),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(eval.hotelName,style: TextStyle(color: appThemeData.buttonColor)),
+                                    controller.createCircles(double.parse(eval.stars)),
                                     Text(eval.date,style: TextStyle(color: appThemeData.buttonColor)),
                                   ],
                                 ),

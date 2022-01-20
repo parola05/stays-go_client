@@ -24,6 +24,27 @@ class HomeController extends GetxController {
     myEvalutations.add(e2);
     myEvalutations.add(e2);
     myEvalutations.add(e2);
+
+    selectedHotel = Hotel(
+        hotelName: "Mercure",
+        stars: "4",
+        preco: "54.6",
+        telefone: "948399240",
+        distancia: "78",
+        rua: "alguma rua",
+        codigoPostal: "94283",
+        evaluations: [],
+        imagePath: "mercure.png",
+        servicos: [],
+        latLng: LatLng(41.5465981, -8.41987));
+
+    pages = [
+      Map(),
+      Evaluations(),
+      Settings(),
+      HotelView(hotel: selectedHotel),
+    ];
+
     super.onInit();
   }
 
@@ -32,13 +53,9 @@ class HomeController extends GetxController {
   }
 
   // Home
-  var pages = [
-    Map(),
-    Evaluations(),
-    Settings(),
-    HotelView(),
-  ];
+  late Hotel selectedHotel;
 
+  var pages;
   var BTBSelected = 0;
 
   void changeBTBSelected(int index) {
@@ -79,6 +96,7 @@ class HomeController extends GetxController {
     Scaffold.of(context).showBottomSheet(
       (context) => GestureDetector(
         onTap: () {
+          changeHotelSelected(hotel);
           changeBTBSelected(3);
           Navigator.of(context).pop();
         },
@@ -276,24 +294,227 @@ class HomeController extends GetxController {
     );
   }
 
+  int starsChoice = 0;
+
+  Widget createCirclesGesture() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      child: Row(
+        children: [
+          if (starsChoice >= 1)
+            GestureDetector(
+              onTap: () {
+                starsChoice = 1;
+                update();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Container(
+                  width: Get.width / 26,
+                  height: Get.width / 26,
+                  decoration: new BoxDecoration(
+                    border: Border.all(color: Colors.blueAccent),
+                    color: appThemeData.buttonColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            )
+          else
+            GestureDetector(
+              onTap: () {
+                starsChoice = 1;
+                update();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Container(
+                  width: Get.width / 26,
+                  height: Get.width / 26,
+                  decoration: new BoxDecoration(
+                    border: Border.all(color: appThemeData.buttonColor),
+                    color: appThemeData.backgroundColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+          if (starsChoice >= 2)
+            GestureDetector(
+              onTap: () {
+                starsChoice = 2;
+                update();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Container(
+                  width: Get.width / 26,
+                  height: Get.width / 26,
+                  decoration: new BoxDecoration(
+                    color: appThemeData.buttonColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            )
+          else
+            GestureDetector(
+              onTap: () {
+                starsChoice = 2;
+                update();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Container(
+                  width: Get.width / 26,
+                  height: Get.width / 26,
+                  decoration: new BoxDecoration(
+                    border: Border.all(color: appThemeData.buttonColor),
+                    color: appThemeData.backgroundColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+          if (starsChoice >= 3)
+            GestureDetector(
+              onTap: () {
+                starsChoice = 3;
+                update();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Container(
+                  width: Get.width / 26,
+                  height: Get.width / 26,
+                  decoration: new BoxDecoration(
+                    color: appThemeData.buttonColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            )
+          else
+            GestureDetector(
+              onTap: () {
+                starsChoice = 3;
+                update();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Container(
+                  width: Get.width / 26,
+                  height: Get.width / 26,
+                  decoration: new BoxDecoration(
+                    border: Border.all(color: appThemeData.buttonColor),
+                    color: appThemeData.backgroundColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+          if (starsChoice >= 4)
+            GestureDetector(
+              onTap: () {
+                starsChoice = 4;
+                update();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Container(
+                  width: Get.width / 26,
+                  height: Get.width / 26,
+                  decoration: new BoxDecoration(
+                    color: appThemeData.buttonColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            )
+          else
+            GestureDetector(
+              onTap: () {
+                starsChoice = 4;
+                update();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Container(
+                  width: Get.width / 26,
+                  height: Get.width / 26,
+                  decoration: new BoxDecoration(
+                    border: Border.all(color: appThemeData.buttonColor),
+                    color: appThemeData.backgroundColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+          if (starsChoice >= 5)
+            GestureDetector(
+              onTap: () {
+                starsChoice = 5;
+                update();
+              },
+              child: Container(
+                width: Get.width / 26,
+                height: Get.width / 26,
+                decoration: new BoxDecoration(
+                  color: appThemeData.buttonColor,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            )
+          else
+            GestureDetector(
+              onTap: () {
+                  starsChoice = 5;
+                  update();
+                },
+              child: Container(
+                width: Get.width / 26,
+                height: Get.width / 26,
+                decoration: new BoxDecoration(
+                  border: Border.all(color: appThemeData.buttonColor),
+                  color: appThemeData.backgroundColor,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void changeHotelSelected(hotel) {
+    pages[3] = HotelView(hotel: hotel);
+  }
+
   //Evaluations
   List<Evaluation> myEvalutations = <Evaluation>[];
   Evaluation e1 = new Evaluation(
       user: "Henrique",
-      hotelName: "Meliã",
+      hotelName: "Dom Vilas",
       stars: "5",
       date: "10/10/2000",
-      text: "horrível",
-      hotelImagePath: "");
+      text: "domVilas.png",
+      hotelImagePath: "domVilas.png");
   Evaluation e2 = new Evaluation(
       user: "Henrique",
-      hotelName: "Meliã2",
+      hotelName: "Mercure",
       stars: "3",
       date: "10/20/2010",
       text: "bom",
-      hotelImagePath: "");
+      hotelImagePath: "mercure.png");
 
   // Hotel
+  bool myEvalMode = false;
+
+  void changeEvalMode(mode) {
+    myEvalMode = mode;
+    update();
+  }
+
   final Hotel hotel1 = Hotel(
       hotelName: "Mercure",
       stars: "4",
@@ -302,8 +523,46 @@ class HomeController extends GetxController {
       distancia: "78",
       rua: "alguma rua",
       codigoPostal: "94283",
-      evaluations: [],
+      evaluations: [
+        Evaluation(
+            user: "Henrique",
+            hotelName: "hotel1",
+            stars: "3",
+            date: "10/20/2010",
+            text: "bom",
+            hotelImagePath: ""),
+        Evaluation(
+            user: "José",
+            hotelName: "hotel1",
+            stars: "5",
+            date: "10/10/2000",
+            text: "horrível",
+            hotelImagePath: ""),
+        Evaluation(
+            user: "Marcos",
+            hotelName: "hotel1",
+            stars: "1",
+            date: "10/11/2010",
+            text: "horrívelmente péssimo",
+            hotelImagePath: ""),
+        Evaluation(
+            user: "Rafael",
+            hotelName: "hotel1",
+            stars: "2",
+            date: "10/5/2000",
+            text: "horrível demais",
+            hotelImagePath: ""),
+      ],
       imagePath: "mercure.png",
+      servicos: [
+        "Piscina",
+        "Pequeno-almoço",
+        "Spa",
+        "Futebol",
+        "Janta",
+        "Golf",
+        "Ping Pong"
+      ],
       latLng: LatLng(41.5465981, -8.41987));
 
   final Hotel hotel2 = Hotel(
@@ -316,5 +575,6 @@ class HomeController extends GetxController {
       codigoPostal: "94283",
       evaluations: [],
       imagePath: "domVilas.png",
+      servicos: ["Piscina"],
       latLng: LatLng(41.5427851, -8.4253537));
 }

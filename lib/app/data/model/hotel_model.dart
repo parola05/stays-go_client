@@ -11,6 +11,7 @@ class Hotel {
   late String codigoPostal;
   late String imagePath;
   late List<Evaluation> evaluations = <Evaluation>[];
+  late List<String> servicos = <String>[];
   late LatLng latLng;
 
   Hotel(
@@ -23,5 +24,6 @@ class Hotel {
       required this.codigoPostal,
       required this.imagePath,
       required this.evaluations,
+      required this.servicos,
       required this.latLng});
 }
