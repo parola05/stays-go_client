@@ -20,7 +20,7 @@ class Evaluations extends StatelessWidget {
             Text(
               "AS SUAS AVALIAÇÕES",
               style: TextStyle(
-                color: appThemeData.primaryColor,
+                color: appThemeData.buttonColor,
                 fontSize: 25,
               ),
             ),
@@ -44,7 +44,7 @@ class Evaluations extends StatelessWidget {
                             Row(
                               children: [
                                 Container(
-                                  color: appThemeData.primaryColor,
+                                  color: appThemeData.buttonColor,
                                   height: Get.height / 4,
                                   width: Get.width / 4,
                                 ),
@@ -52,15 +52,15 @@ class Evaluations extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(eval.hotelName,style: TextStyle(color: appThemeData.primaryColor)),
-                                    Text(eval.date,style: TextStyle(color: appThemeData.primaryColor)),
+                                    Text(eval.hotelName,style: TextStyle(color: appThemeData.buttonColor)),
+                                    Text(eval.date,style: TextStyle(color: appThemeData.buttonColor)),
                                   ],
                                 ),
                               ],
                             ),
                             SizedBox(height: 15,),
                             Container(
-                              color: appThemeData.primaryColor,
+                              color: appThemeData.buttonColor,
                               width: Get.width,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),

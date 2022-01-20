@@ -14,8 +14,9 @@ class Map extends StatelessWidget {
               ),
               onMapCreated: (GoogleMapController gController) {
                 gController.setMapStyle(controller.darkMapStyle);
+                controller.context = context;
               },
-              markers: controller.makers,
+              markers: controller.markers,
             ));
   }
 }

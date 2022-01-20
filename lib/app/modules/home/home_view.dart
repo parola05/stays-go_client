@@ -19,8 +19,9 @@ class HomeView extends GetView<HomeController> {
               BottomNavigationBarItem(icon: Icon(Icons.star_border), label: 'AVALIAÇÕES'),
               BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'DEFINIÇÕES'),
             ], 
-            backgroundColor: Colors.blue[700],
-            currentIndex: controller.BTBSelected,
+            backgroundColor: Colors.blue[600],
+            currentIndex: 
+              (controller.BTBSelected == 3) ? 0: controller.BTBSelected,
             selectedItemColor: Colors.black,
             onTap: (index) => {controller.changeBTBSelected(index)},
           ),
