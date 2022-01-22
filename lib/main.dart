@@ -8,7 +8,7 @@ void main() {
   runApp(GetMaterialApp(
     title: "Stays Go",
     debugShowCheckedModeBanner: false,
-    initialRoute: Routes.HOME,
+    initialRoute: Routes.INITIAL,
     getPages: AppPages.routes,
     theme: appThemeData,
   ));

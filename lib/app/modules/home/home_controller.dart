@@ -108,7 +108,8 @@ class HomeController extends GetxController {
               padding: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
               child: SingleChildScrollView(
                 child: Row(children: [
-                  Image.network(baseUrl + "/" + hotel.imagePath, scale: 6.5),
+                  Image.asset("assets/" + hotel.imagePath,scale: 6.5),
+                  //Image.network(baseUrl + "/" + hotel.imagePath, scale: 6.5),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(

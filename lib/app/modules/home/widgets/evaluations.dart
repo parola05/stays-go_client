@@ -44,7 +44,8 @@ class Evaluations extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Image.network(baseUrl + "/" + eval.hotelImagePath,scale:7.5),
+                                Image.asset("assets/" + eval.hotelImagePath, scale: 6.5),
+                                //Image.network(baseUrl + "/" + eval.hotelImagePath,scale:7.5),
                                 SizedBox(width: 15,),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
