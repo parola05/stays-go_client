@@ -6,6 +6,8 @@ import 'package:stays_go/app/data/model/evaluation_model.dart';
 import 'package:stays_go/app/data/model/hotel_model.dart';
 import 'package:stays_go/app/modules/home/widgets/evaluations.dart';
 import 'package:stays_go/app/modules/home/widgets/hotel.dart';
+import 'package:stays_go/app/modules/home/widgets/mailConfig.dart';
+import 'package:stays_go/app/modules/home/widgets/passwordConfig.dart';
 import 'package:stays_go/app/modules/home/widgets/settings.dart';
 import 'package:stays_go/app/modules/home/widgets/map.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -43,6 +45,8 @@ class HomeController extends GetxController {
       Evaluations(),
       Settings(),
       HotelView(hotel: selectedHotel),
+      PasswordConfig(),
+      MailConfig(),
     ];
 
     super.onInit();
@@ -57,9 +61,13 @@ class HomeController extends GetxController {
 
   var pages;
   var BTBSelected = 0;
+  var BTBAppBar = 0;
 
   void changeBTBSelected(int index) {
     BTBSelected = index;
+    BTBAppBar = index;
+    if (index == 3) BTBAppBar = 0;
+    if (index == 4 || BTBSelected == 5) BTBAppBar = 2;
     update();
   }
 
@@ -108,7 +116,7 @@ class HomeController extends GetxController {
               padding: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
               child: SingleChildScrollView(
                 child: Row(children: [
-                  Image.asset("assets/" + hotel.imagePath,scale: 6.5),
+                  Image.asset("assets/" + hotel.imagePath, scale: 6.5),
                   //Image.network(baseUrl + "/" + hotel.imagePath, scale: 6.5),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -469,9 +477,9 @@ class HomeController extends GetxController {
           else
             GestureDetector(
               onTap: () {
-                  starsChoice = 5;
-                  update();
-                },
+                starsChoice = 5;
+                update();
+              },
               child: Container(
                 width: Get.width / 26,
                 height: Get.width / 26,
@@ -578,4 +586,34 @@ class HomeController extends GetxController {
       imagePath: "domVilas.png",
       servicos: ["Piscina"],
       latLng: LatLng(41.5427851, -8.4253537));
+
+  // Config password
+  final formPasswordConfigKey = GlobalKey<FormState>();
+
+  TextEditingController oldPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController newPasswordAgainController = TextEditingController();
+
+  void changePassword() {
+    if (formPasswordConfigKey.currentState!.validate()) {
+      print(oldPasswordController.text);
+      print(newPasswordController.text);
+      print(newPasswordAgainController.text);
+    }
+  }
+  
+  // Config email
+  final formMailConfigKey = GlobalKey<FormState>();
+
+  TextEditingController oldMailController = TextEditingController();
+  TextEditingController newMailController = TextEditingController();
+  TextEditingController newMailAgainController = TextEditingController();
+
+  void changeMail() {
+    if (formMailConfigKey.currentState!.validate()) {
+      print(oldMailController.text);
+      print(newMailController.text);
+      print(newMailAgainController.text);
+    }
+  }
 }
