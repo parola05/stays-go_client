@@ -8,7 +8,7 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       body: GetBuilder<HomeController>(
         init: HomeController(),
-        builder: (controller) => controller.pages[controller.BTBSelected],
+        builder: (controller) => controller.pages[controller.pageSelected],
       ),
       bottomNavigationBar: GetBuilder<HomeController>(
         builder: (controller) => SizedBox(
@@ -20,7 +20,7 @@ class HomeView extends GetView<HomeController> {
               BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'DEFINIÇÕES'),
             ], 
             backgroundColor: Colors.blue[600],
-            currentIndex: controller.BTBAppBar,
+            currentIndex: controller.pageAppBar,
             selectedItemColor: Colors.black,
             onTap: (index) => {controller.changeBTBSelected(index)},
           ),

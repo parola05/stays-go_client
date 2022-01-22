@@ -12,10 +12,10 @@ class Settings extends StatelessWidget {
         alignment: Alignment.center,
         child: Column(
           children: [
-            SizedBox(height: Get.height / 10),
+            SizedBox(height: Get.height / 14),
             Icon(Icons.person_pin,
                 size: Get.height / 5, color: appThemeData.buttonColor),
-            Text("myUsername", style: TextStyle(color: Colors.white)),
+            Text(controller.myUsername, style: TextStyle(color: Colors.white)),
             SizedBox(height: Get.height / 6),
             ElevatedButton(
               onPressed: () {
@@ -55,7 +55,7 @@ class Settings extends StatelessWidget {
             SizedBox(height: Get.height / 40),
             ElevatedButton(
               onPressed: () {
-                controller.changeBTBSelected(5);
+                controller.logout();
               },
               child: Text(
                 'TERMINAR SESSÃO',

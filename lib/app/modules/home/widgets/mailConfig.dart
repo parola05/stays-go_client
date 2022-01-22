@@ -16,7 +16,7 @@ class MailConfig extends StatelessWidget {
               SizedBox(height: Get.height / 14),
               Icon(Icons.person_pin,
                   size: Get.height / 5, color: appThemeData.buttonColor),
-              Text("myUsername", style: TextStyle(color: Colors.white)),
+              Text(controller.myUsername, style: TextStyle(color: Colors.white)),
               SizedBox(height: Get.height / 30),
               Align(
                 alignment: Alignment(-0.5, 2),
@@ -100,8 +100,8 @@ class MailConfig extends StatelessWidget {
                 child: TextFormField(
                  controller: controller.newMailAgainController,
                   validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Campo requerido';
+                        if (value != controller.newMailController.text) {
+                          return 'endereço diferente do inserido';
                         }
                         return null;
                   },

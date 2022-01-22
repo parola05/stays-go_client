@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:stays_go/app/data/base_url.dart';
+import 'package:stays_go/app/data/model/auth_model.dart';
 import 'package:stays_go/app/data/model/evaluation_model.dart';
 import 'package:stays_go/app/data/model/hotel_model.dart';
+import 'package:stays_go/app/data/repository/client_repository.dart';
 import 'package:stays_go/app/modules/home/widgets/evaluations.dart';
 import 'package:stays_go/app/modules/home/widgets/hotel.dart';
 import 'package:stays_go/app/modules/home/widgets/mailConfig.dart';
@@ -11,9 +15,14 @@ import 'package:stays_go/app/modules/home/widgets/passwordConfig.dart';
 import 'package:stays_go/app/modules/home/widgets/settings.dart';
 import 'package:stays_go/app/modules/home/widgets/map.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:stays_go/app/modules/home/widgets/successChanges.dart';
+import 'package:stays_go/app/routes/app_routes.dart';
 import 'package:stays_go/app/theme/app_theme.dart';
 
 class HomeController extends GetxController {
+  final box = GetStorage("stays_go");
+  final clientRepository = Get.find<ClientRepository>();
+
   late String darkMapStyle;
 
   @override
@@ -26,6 +35,9 @@ class HomeController extends GetxController {
     myEvalutations.add(e2);
     myEvalutations.add(e2);
     myEvalutations.add(e2);
+
+    Auth auth = Auth.fromJson(box.read("auth"));
+    myUsername = auth.username;
 
     selectedHotel = Hotel(
         hotelName: "Mercure",
@@ -47,6 +59,7 @@ class HomeController extends GetxController {
       HotelView(hotel: selectedHotel),
       PasswordConfig(),
       MailConfig(),
+      SuccessChanges(),
     ];
 
     super.onInit();
@@ -60,14 +73,14 @@ class HomeController extends GetxController {
   late Hotel selectedHotel;
 
   var pages;
-  var BTBSelected = 0;
-  var BTBAppBar = 0;
+  var pageSelected = 0;
+  var pageAppBar = 0;
 
   void changeBTBSelected(int index) {
-    BTBSelected = index;
-    BTBAppBar = index;
-    if (index == 3) BTBAppBar = 0;
-    if (index == 4 || BTBSelected == 5) BTBAppBar = 2;
+    pageSelected = index;
+    pageAppBar = index;
+    if (index == 3) pageAppBar = 0;
+    if (index == 4 || index == 5 || index == 6) pageAppBar = 2;
     update();
   }
 
@@ -587,6 +600,14 @@ class HomeController extends GetxController {
       servicos: ["Piscina"],
       latLng: LatLng(41.5427851, -8.4253537));
 
+  // Settings
+  late String myUsername;
+
+  void logout() {
+    box.erase();
+    Get.offAllNamed(Routes.END);
+  }
+
   // Config password
   final formPasswordConfigKey = GlobalKey<FormState>();
 
@@ -594,14 +615,24 @@ class HomeController extends GetxController {
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController newPasswordAgainController = TextEditingController();
 
-  void changePassword() {
+  void changePassword() async {
     if (formPasswordConfigKey.currentState!.validate()) {
-      print(oldPasswordController.text);
-      print(newPasswordController.text);
-      print(newPasswordAgainController.text);
+      try {
+        Auth auth = Auth.fromJson(box.read("auth"));
+        await clientRepository.updatePassword(auth.username,
+            newPasswordController.text, oldPasswordController.text);
+
+        changeBTBSelected(6);
+        
+        Timer(Duration(seconds: 3), () {
+           changeBTBSelected(2);
+        });
+      } catch (error) {
+        Get.defaultDialog(title: "Erro", content: Text(error.toString()));
+      }
     }
   }
-  
+
   // Config email
   final formMailConfigKey = GlobalKey<FormState>();
 
@@ -609,11 +640,21 @@ class HomeController extends GetxController {
   TextEditingController newMailController = TextEditingController();
   TextEditingController newMailAgainController = TextEditingController();
 
-  void changeMail() {
+  void changeMail() async {
     if (formMailConfigKey.currentState!.validate()) {
-      print(oldMailController.text);
-      print(newMailController.text);
-      print(newMailAgainController.text);
+      try {
+        Auth auth = Auth.fromJson(box.read("auth"));
+        await clientRepository.updateEmail(
+            auth.username, newMailController.text, oldMailController.text);
+
+        changeBTBSelected(6);
+        
+        Timer(Duration(seconds: 3), () {
+           changeBTBSelected(2);
+        });
+      } catch (error) {
+        Get.defaultDialog(title: "Erro", content: Text(error.toString()));
+      }
     }
   }
 }

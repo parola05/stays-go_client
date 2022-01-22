@@ -16,7 +16,7 @@ class PasswordConfig extends StatelessWidget {
               SizedBox(height: Get.height / 14),
               Icon(Icons.person_pin,
                   size: Get.height / 5, color: appThemeData.buttonColor),
-              Text("myUsername", style: TextStyle(color: Colors.white)),
+              Text(controller.myUsername, style: TextStyle(color: Colors.white)),
               SizedBox(height: Get.height / 30),
               Align(
                 alignment: Alignment(-0.5, 2),
@@ -100,8 +100,8 @@ class PasswordConfig extends StatelessWidget {
                 child: TextFormField(
                  controller: controller.newPasswordAgainController,
                   validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Campo requerido';
+                        if (value != controller.newPasswordController.text) {
+                          return 'palavra-passe diferente da inserida' ;
                         }
                         return null;
                   },

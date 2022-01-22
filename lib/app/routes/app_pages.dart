@@ -1,3 +1,5 @@
+import 'package:stays_go/app/modules/end/end_binding.dart';
+import 'package:stays_go/app/modules/end/end_view.dart';
 import 'package:stays_go/app/modules/home/home_binding.dart';
 import 'package:stays_go/app/modules/home/home_view.dart';
 import 'package:stays_go/app/modules/initial/initial_binding.dart';
@@ -39,6 +41,11 @@ class AppPages {
       name: Routes.HOME,
       page: () => HomeView(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: Routes.END,
+      page: () => EndView(),
+      binding: EndBinding(),
     ),
   ];
 }
