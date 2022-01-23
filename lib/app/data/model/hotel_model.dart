@@ -2,6 +2,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stays_go/app/data/model/evaluation_model.dart';
 
 class Hotel {
+  late String codEstabelecimento;
   late String hotelName;
   late String stars;
   late String preco;
@@ -15,7 +16,9 @@ class Hotel {
   late LatLng latLng;
 
   Hotel(
-      {required this.hotelName,
+      {
+      required this.codEstabelecimento,
+      required this.hotelName,
       required this.stars,
       required this.preco,
       required this.telefone,
@@ -28,6 +31,7 @@ class Hotel {
       required this.latLng});
 
   Hotel.fromJson(Map<String, dynamic> json) {
+    codEstabelecimento = json['codEstabelecimento'].toString();
     hotelName = json['hotelName'];
     stars = json['stars'].toString();
     preco = json['preco'].toString();

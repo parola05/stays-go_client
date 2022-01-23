@@ -11,6 +11,7 @@ import 'package:stays_go/app/data/model/auth_model.dart';
 import 'package:stays_go/app/data/model/evaluation_model.dart';
 import 'package:stays_go/app/data/model/hotel_model.dart';
 import 'package:stays_go/app/data/repository/client_repository.dart';
+import 'package:stays_go/app/data/repository/evaluation_repository.dart';
 import 'package:stays_go/app/data/repository/hotel_repository.dart';
 import 'package:stays_go/app/modules/home/widgets/evaluations.dart';
 import 'package:stays_go/app/modules/home/widgets/hotel.dart';
@@ -27,6 +28,7 @@ class HomeController extends GetxController {
   final box = GetStorage("stays_go");
   final clientRepository = Get.find<ClientRepository>();
   final hotelRepository = Get.find<HotelRepository>();
+  final evaluationRepository = Get.find<EvaluationRepository>();
 
   late String darkMapStyle;
   bool permissionAccepted = false;
@@ -53,6 +55,7 @@ class HomeController extends GetxController {
     myUsername = auth.username;
 
     selectedHotel = Hotel(
+        codEstabelecimento: "0",
         hotelName: "Mercure",
         stars: "4",
         preco: "54.6",
@@ -554,6 +557,30 @@ class HomeController extends GetxController {
 
   void changeHotelSelected(hotel) {
     pages[3] = HotelView(hotel: hotel);
+    selectedHotel = hotel;
+  }
+
+  final evaluationFormKey = GlobalKey<FormState>();
+
+  TextEditingController evaluationController = TextEditingController();
+
+  Future<bool> makeEvaluation() async {
+    if (evaluationFormKey.currentState!.validate()) {
+      try {
+        String message = await evaluationRepository.makeEvaluation(
+            int.parse(selectedHotel.codEstabelecimento),
+            myUsername,
+            starsChoice,
+            evaluationController.text,
+        );
+        Get.defaultDialog(title: "Sucesso", content: Text(message));
+        return true;
+      } catch (error) {
+        Get.defaultDialog(title: "Erro", content: Text(error.toString()));
+      }
+    }
+
+    return false;
   }
 
   //Evaluations
@@ -580,69 +607,6 @@ class HomeController extends GetxController {
     myEvalMode = mode;
     update();
   }
-
-  final Hotel hotel1 = Hotel(
-      hotelName: "Mercure",
-      stars: "4",
-      preco: "54.6",
-      telefone: "948399240",
-      distancia: "78",
-      rua: "alguma rua",
-      codigoPostal: "94283",
-      evaluations: [
-        Evaluation(
-            user: "Henrique",
-            hotelName: "hotel1",
-            stars: "3",
-            date: "10/20/2010",
-            text: "bom",
-            hotelImagePath: ""),
-        Evaluation(
-            user: "José",
-            hotelName: "hotel1",
-            stars: "5",
-            date: "10/10/2000",
-            text: "horrível",
-            hotelImagePath: ""),
-        Evaluation(
-            user: "Marcos",
-            hotelName: "hotel1",
-            stars: "1",
-            date: "10/11/2010",
-            text: "horrívelmente péssimo",
-            hotelImagePath: ""),
-        Evaluation(
-            user: "Rafael",
-            hotelName: "hotel1",
-            stars: "2",
-            date: "10/5/2000",
-            text: "horrível demais",
-            hotelImagePath: ""),
-      ],
-      imagePath: "mercure.png",
-      servicos: [
-        "Piscina",
-        "Pequeno-almoço",
-        "Spa",
-        "Futebol",
-        "Janta",
-        "Golf",
-        "Ping Pong"
-      ],
-      latLng: LatLng(41.5465981, -8.41987));
-
-  final Hotel hotel2 = Hotel(
-      hotelName: "Dom Vilas",
-      stars: "5",
-      preco: "64.6",
-      telefone: "948385340",
-      distancia: "71",
-      rua: "Conselheiro Lobato",
-      codigoPostal: "94283",
-      evaluations: [],
-      imagePath: "domVilas.png",
-      servicos: ["Piscina"],
-      latLng: LatLng(41.5427851, -8.4253537));
 
   // Settings
   late String myUsername;
