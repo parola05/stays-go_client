@@ -45,10 +45,6 @@ class HomeController extends GetxController {
     _loadMapStyles();
     await getHoteisProximos();
     addMarkers();
-    myEvalutations.add(e1);
-    myEvalutations.add(e2);
-    myEvalutations.add(e2);
-    myEvalutations.add(e2);
     permissionAccepted = true;
 
     Auth auth = Auth.fromJson(box.read("auth"));
@@ -568,10 +564,10 @@ class HomeController extends GetxController {
     if (evaluationFormKey.currentState!.validate()) {
       try {
         String message = await evaluationRepository.makeEvaluation(
-            int.parse(selectedHotel.codEstabelecimento),
-            myUsername,
-            starsChoice,
-            evaluationController.text,
+          int.parse(selectedHotel.codEstabelecimento),
+          myUsername,
+          starsChoice,
+          evaluationController.text,
         );
         Get.defaultDialog(title: "Sucesso", content: Text(message));
         return true;
@@ -584,21 +580,11 @@ class HomeController extends GetxController {
   }
 
   //Evaluations
-  List<Evaluation> myEvalutations = <Evaluation>[];
-  Evaluation e1 = new Evaluation(
-      user: "Henrique",
-      hotelName: "Dom Vilas",
-      stars: "5",
-      date: "10/10/2000",
-      text: "domVilas.png",
-      hotelImagePath: "domVilas.png");
-  Evaluation e2 = new Evaluation(
-      user: "Henrique",
-      hotelName: "Mercure",
-      stars: "3",
-      date: "10/20/2010",
-      text: "bom",
-      hotelImagePath: "mercure.png");
+  List<Evaluation> myEvaluations = <Evaluation>[];
+
+  getMyEvaluations() async {
+    myEvaluations = await evaluationRepository.getMyEvaluations();
+  }
 
   // Hotel
   bool myEvalMode = false;

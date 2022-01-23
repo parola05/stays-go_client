@@ -15,8 +15,7 @@ class Evaluations extends StatelessWidget {
       color: appThemeData.backgroundColor,
       child: Padding(
         padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-        child: GetBuilder<HomeController>(
-          builder: (controller) {
+        child: GetBuilder<HomeController>(builder: (controller) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -34,51 +33,79 @@ class Evaluations extends StatelessWidget {
                   fontSize: 13,
                 ),
               ),
-              SizedBox(height: 15,),
-              Expanded(
-                      child: ListView.builder(
-                        itemCount: controller.myEvalutations.length,
-                        itemBuilder: (context, index) {
-                          Evaluation eval = controller.myEvalutations[index];
-                          return Column(
-                            children: [
-                              Row(
+              SizedBox(
+                height: 15,
+              ),
+              FutureBuilder(
+                  future: controller.getMyEvaluations(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        return Container();
+                      } else {
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: controller.myEvaluations.length,
+                            itemBuilder: (context, index) {
+                              Evaluation eval = controller.myEvaluations[index];
+                              return Column(
                                 children: [
-                                  Image.asset("assets/" + eval.hotelImagePath, scale: 6.5),
-                                  //Image.network(baseUrl + "/" + eval.hotelImagePath,scale:7.5),
-                                  SizedBox(width: 15,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  Row(
                                     children: [
-                                      Text(eval.hotelName,style: TextStyle(color: appThemeData.buttonColor)),
-                                      controller.createCircles(double.parse(eval.stars)),
-                                      Text(eval.date,style: TextStyle(color: appThemeData.buttonColor)),
+                                      Image.network(eval.hotelImagePath,scale:4.6),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(eval.hotelName,
+                                              style: TextStyle(
+                                                  color: appThemeData
+                                                      .buttonColor)),
+                                          controller.createCircles(
+                                              double.parse(eval.stars)),
+                                          Text(eval.date,
+                                              style: TextStyle(
+                                                  color: appThemeData
+                                                      .buttonColor)),
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                ],
-                              ),
-                              SizedBox(height: 15,),
-                              Container(
-                                color: appThemeData.buttonColor,
-                                width: Get.width,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    eval.text,
-                                    style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+                                  SizedBox(
+                                    height: 15,
                                   ),
-                                ),
-                              ),
-                              SizedBox(height: 15,),
-                            ],
-                          );
-                        },
-                      ),
-                  ),
-                ]
-            );
-          }
-        ),
+                                  Container(
+                                    color: appThemeData.buttonColor,
+                                    width: Get.width,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        eval.text,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        );
+                      }
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  }),
+            ],
+          );
+        }),
       ),
     );
   }
