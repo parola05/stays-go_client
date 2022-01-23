@@ -1,13 +1,17 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:stays_go/app/data/base_url.dart';
 import 'package:stays_go/app/data/model/auth_model.dart';
 import 'package:stays_go/app/data/model/evaluation_model.dart';
 import 'package:stays_go/app/data/model/hotel_model.dart';
 import 'package:stays_go/app/data/repository/client_repository.dart';
+import 'package:stays_go/app/data/repository/hotel_repository.dart';
 import 'package:stays_go/app/modules/home/widgets/evaluations.dart';
 import 'package:stays_go/app/modules/home/widgets/hotel.dart';
 import 'package:stays_go/app/modules/home/widgets/mailConfig.dart';
@@ -22,19 +26,28 @@ import 'package:stays_go/app/theme/app_theme.dart';
 class HomeController extends GetxController {
   final box = GetStorage("stays_go");
   final clientRepository = Get.find<ClientRepository>();
+  final hotelRepository = Get.find<HotelRepository>();
 
   late String darkMapStyle;
+  bool permissionAccepted = false;
 
   @override
-  void onInit() {
+  Future<Void?> onInit() async {
+    print("Pegando localização do utilizador");
+    //Position myPosition = await getMyLocation();
+    print("Obtida localização do utilizador");
+    //myLat = myPosition.latitude;
+    myLat = 41.5465981;
+    //myLong = myPosition.longitude;
+    myLong = -8.41987;
     _loadMapStyles();
-    hoteis.add(hotel1);
-    hoteis.add(hotel2);
+    await getHoteisProximos();
     addMarkers();
     myEvalutations.add(e1);
     myEvalutations.add(e2);
     myEvalutations.add(e2);
     myEvalutations.add(e2);
+    permissionAccepted = true;
 
     Auth auth = Auth.fromJson(box.read("auth"));
     myUsername = auth.username;
@@ -87,11 +100,37 @@ class HomeController extends GetxController {
   //Map
   late BuildContext context;
 
-  double lat = 41.5465981; // change for current position
-  double long = -8.41987; // change for current position
+  late double myLat;
+  late double myLong;
 
   Set<Marker> markers = new Set<Marker>();
 
+  Future<Position> getMyLocation() async {
+    LocationPermission permissao;
+
+    bool ativado = await Geolocator.isLocationServiceEnabled();
+    if (!ativado) {
+      return Future.error("Por favor, habilite a localização no telemóvel");
+    }
+
+    permissao = await Geolocator.checkPermission();
+
+    if (permissao == LocationPermission.denied) {
+      permissao = await Geolocator.requestPermission();
+      if (permissao == LocationPermission.denied) {
+        return Future.error("Você precisa autorizar o acesso à localização");
+      }
+    }
+
+    if (permissao == LocationPermission.deniedForever) {
+      return Future.error("Você precisa autorizar o acesso à localização");
+    }
+
+    final Future<Position> geoposition =
+        Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+    return geoposition;
+  }
   /*
   Marker marker = Marker(
       markerId: new MarkerId("1"),
@@ -101,6 +140,11 @@ class HomeController extends GetxController {
   */
 
   List<Hotel> hoteis = <Hotel>[];
+
+  Future<Void?> getHoteisProximos() async {
+    hoteis = await hotelRepository.getHoteisProximos(myLat, myLong);
+  }
+
   void addMarkers() {
     hoteis.forEach((element) {
       markers.add(Marker(
@@ -129,8 +173,8 @@ class HomeController extends GetxController {
               padding: EdgeInsets.only(left: 10, right: 10, bottom: 0, top: 0),
               child: SingleChildScrollView(
                 child: Row(children: [
-                  Image.asset("assets/" + hotel.imagePath, scale: 6.5),
-                  //Image.network(baseUrl + "/" + hotel.imagePath, scale: 6.5),
+                  //Image.asset("assets/" + hotel.imagePath, scale: 6.5),
+                  Image.network(hotel.imagePath, scale: 3.2),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
@@ -623,9 +667,9 @@ class HomeController extends GetxController {
             newPasswordController.text, oldPasswordController.text);
 
         changeBTBSelected(6);
-        
+
         Timer(Duration(seconds: 3), () {
-           changeBTBSelected(2);
+          changeBTBSelected(2);
         });
       } catch (error) {
         Get.defaultDialog(title: "Erro", content: Text(error.toString()));
@@ -648,9 +692,9 @@ class HomeController extends GetxController {
             auth.username, newMailController.text, oldMailController.text);
 
         changeBTBSelected(6);
-        
+
         Timer(Duration(seconds: 3), () {
-           changeBTBSelected(2);
+          changeBTBSelected(2);
         });
       } catch (error) {
         Get.defaultDialog(title: "Erro", content: Text(error.toString()));

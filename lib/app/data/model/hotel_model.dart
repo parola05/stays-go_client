@@ -26,4 +26,20 @@ class Hotel {
       required this.evaluations,
       required this.servicos,
       required this.latLng});
+
+  Hotel.fromJson(Map<String, dynamic> json) {
+    hotelName = json['hotelName'];
+    stars = json['stars'].toString();
+    preco = json['preco'].toString();
+    telefone = json['telefone'].toString();
+    distancia = json['distancia'].toString();
+    rua = json['rua'];
+    codigoPostal = json['codigoPostal'];
+    imagePath = json['imagePath'];
+    evaluations = [];
+    //evaluations = json['evaluations'];
+    servicos = [];
+    //servicos = json['servicos'];
+    latLng = LatLng(json['latitude'], json['longitude']);
+  }
 }

@@ -2,6 +2,8 @@
     package="com.grupo14.stays_go">
       
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     
    <application
         android:label="Stays GO"

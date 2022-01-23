@@ -47,8 +47,8 @@ class HotelView extends StatelessWidget {
                     height: 15,
                   ),
                   Row(children: [
-                    Image.asset("assets/" + hotel.imagePath, scale: 6.5),
-                    //Image.network(baseUrl + "/" + hotel.imagePath, scale: 6.5),
+                    //Image.asset("assets/" + hotel.imagePath, scale: 6.5),
+                    Image.network(hotel.imagePath, scale: 3.2),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Column(

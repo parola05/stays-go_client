@@ -9,7 +9,7 @@ class Map extends StatelessWidget {
     return GetBuilder<HomeController>(
         builder: (controller) => GoogleMap(
               initialCameraPosition: CameraPosition(
-                target: LatLng(controller.lat, controller.long),
+                target: LatLng(controller.myLat, controller.myLong),
                 zoom: 15.0,
               ),
               onMapCreated: (GoogleMapController gController) {
