@@ -61,7 +61,7 @@ class HotelView extends StatelessWidget {
                                     .createCircles(double.parse(hotel.stars)),
                                 Text(
                                     "  (" +
-                                        hotel.evaluations.length.toString() +
+                                        hotel.nEvaluations.toString() +
                                         ")",
                                     style: TextStyle(
                                       color: Colors.grey,
@@ -87,7 +87,7 @@ class HotelView extends StatelessWidget {
                                   fontSize: 12,
                                 )),
                             SizedBox(height: 3),
-                            Text("Distância: " + hotel.distancia + " km",
+                            Text("Distância: " +  controller.kmToMt(double.parse(hotel.distancia)).toStringAsFixed(1) + " m",
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 12,
@@ -178,47 +178,63 @@ class HotelView extends StatelessWidget {
                       height: 8,
                     ),
                     controller.myEvalMode == false
-                        ? Expanded(
-                            child: ListView.builder(
-                              itemCount: hotel.evaluations.length,
-                              itemBuilder: (context, index) {
-                                Evaluation eval = hotel.evaluations[index];
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(eval.user,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        )),
-                                    controller.createCircles(
-                                        double.parse(eval.stars)),
-                                    Text("Avaliado em: " + eval.date,
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 10,
-                                        )),
-                                    SizedBox(height: 5),
-                                    Container(
-                                      color: appThemeData.buttonColor,
-                                      width: Get.width,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          eval.text,
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 10),
-                                  ],
-                                );
-                              },
-                            ),
-                          )
-                        : Column(
+                        ? FutureBuilder(
+                            future: controller.getHotelEvaluations(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                if (snapshot.hasError) {
+                                  return Container();
+                                } else {
+                                  return Expanded(
+                                      child: ListView.builder(
+                                    itemCount:
+                                        controller.hotelEvaluations.length,
+                                    itemBuilder: (context, index) {
+                                      Evaluation eval =
+                                          controller.hotelEvaluations[index];
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(eval.user,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                              )),
+                                          controller.createCircles(
+                                              double.parse(eval.stars)),
+                                          Text("Avaliado em: " + eval.date,
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 10,
+                                              )),
+                                          SizedBox(height: 5),
+                                          Container(
+                                            color: appThemeData.buttonColor,
+                                            width: Get.width,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                eval.text,
+                                                style: TextStyle(
+                                                    color: Colors.black,),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                        ],
+                                      );
+                                    },
+                                  ));
+                                }
+                              } else {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                            }
+                            ): Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Fazer avaliação",

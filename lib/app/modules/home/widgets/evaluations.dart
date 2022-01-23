@@ -66,7 +66,7 @@ class Evaluations extends StatelessWidget {
                                                       .buttonColor)),
                                           controller.createCircles(
                                               double.parse(eval.stars)),
-                                          Text(eval.date,
+                                          Text("Avaliado em " + eval.date,
                                               style: TextStyle(
                                                   color: appThemeData
                                                       .buttonColor)),

@@ -44,7 +44,6 @@ class HomeController extends GetxController {
     myLong = -8.41987;
     _loadMapStyles();
     await getHoteisProximos();
-    addMarkers();
     permissionAccepted = true;
 
     Auth auth = Auth.fromJson(box.read("auth"));
@@ -59,9 +58,9 @@ class HomeController extends GetxController {
         distancia: "78",
         rua: "alguma rua",
         codigoPostal: "94283",
-        evaluations: [],
         imagePath: "mercure.png",
         servicos: [],
+        nEvaluations: 0,
         latLng: LatLng(41.5465981, -8.41987));
 
     pages = [
@@ -94,6 +93,10 @@ class HomeController extends GetxController {
     if (index == 3) pageAppBar = 0;
     if (index == 4 || index == 5 || index == 6) pageAppBar = 2;
     update();
+  }
+
+  double kmToMt(distanceInKiloMeters) {
+    return distanceInKiloMeters * 1000;
   }
 
   //Map
@@ -142,6 +145,7 @@ class HomeController extends GetxController {
 
   Future<Void?> getHoteisProximos() async {
     hoteis = await hotelRepository.getHoteisProximos(myLat, myLong);
+    addMarkers();
   }
 
   void addMarkers() {
@@ -188,10 +192,7 @@ class HomeController extends GetxController {
                         Row(
                           children: [
                             createCircles(double.parse(hotel.stars)),
-                            Text(
-                                "  (" +
-                                    hotel.evaluations.length.toString() +
-                                    ")",
+                            Text("  (" + hotel.nEvaluations.toString() + ")",
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 14,
@@ -211,7 +212,7 @@ class HomeController extends GetxController {
                           ],
                         ),
                         SizedBox(height: 3),
-                        Text("Distância: " + hotel.distancia + " km",
+                        Text("Distância: " + kmToMt(double.parse(hotel.distancia)).toStringAsFixed(1)  + " m",
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 10,
@@ -587,6 +588,13 @@ class HomeController extends GetxController {
   }
 
   // Hotel
+  List<Evaluation> hotelEvaluations = <Evaluation>[];
+
+  getHotelEvaluations() async {
+    hotelEvaluations = await evaluationRepository
+        .getHotelEvaluations(selectedHotel.codEstabelecimento);
+  }
+
   bool myEvalMode = false;
 
   void changeEvalMode(mode) {

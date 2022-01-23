@@ -33,4 +33,22 @@ class EvaluationRepository {
       return Future.error(error.toString());
     }
   }
+  
+  Future<List<Evaluation>> getHotelEvaluations(codHotel) async {
+    try {
+      Map<String, dynamic> json = await apiClient.getHotelEvaluations(codHotel);
+
+      List<Evaluation> evaluations = <Evaluation>[];
+      var evaluationsJson = json["avaliacoes"];
+
+      for (var evaluation in evaluationsJson) {
+        evaluations.add(Evaluation.fromJson(evaluation));
+      }
+
+      print("Evaluations size:" + evaluations.length.toString());
+      return evaluations;
+    } catch (error) {
+      return Future.error(error.toString());
+    }
+  }
 }

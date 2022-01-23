@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stays_go/app/modules/home/home_controller.dart';
+import 'package:stays_go/app/theme/app_theme.dart';
 
 class HomeView extends GetView<HomeController> {
   @override
@@ -19,7 +20,11 @@ class HomeView extends GetView<HomeController> {
                       return controller.pages[controller.pageSelected];
                     }
                   } else {
-                    return Center(child: CircularProgressIndicator());
+                    return Container(
+                      color: appThemeData.backgroundColor,
+                      child: 
+                        Center(child: CircularProgressIndicator())
+                      );
                   }
                 })
             : controller.pages[controller.pageSelected],

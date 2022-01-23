@@ -10,7 +10,7 @@ class Map extends StatelessWidget {
         builder: (controller) => GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: LatLng(controller.myLat, controller.myLong),
-                zoom: 15.0,
+                zoom: 16.0,
               ),
               onMapCreated: (GoogleMapController gController) {
                 gController.setMapStyle(controller.darkMapStyle);
