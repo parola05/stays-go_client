@@ -39,7 +39,12 @@ class Hotel {
     codigoPostal = json['codigoPostal'];
     imagePath = json['imagePath'];
     nEvaluations = json['nEvaluations'];
-    servicos = [];
+    List<String> tmp = <String>[];
+    for (var servico in json['servicos']) {
+      tmp.add(servico);
+ 
+    }
+    servicos = tmp;
     //servicos = json['servicos'];
     latLng = LatLng(json['latitude'], json['longitude']);
   }
