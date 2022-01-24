@@ -1,1 +1,1 @@
-const baseUrl = "http://10.0.2.2:8080";
+const baseUrl = "http://app-a54ef57b-56ca-4cdd-866c-30d072665bd9.cleverapps.io";
