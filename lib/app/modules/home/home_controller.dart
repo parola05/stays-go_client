@@ -35,17 +35,17 @@ class HomeController extends GetxController {
 
   @override
   Future<Void?> onInit() async {
-    print("Pegando localização do utilizador");
-    //Position myPosition = await getMyLocation();
-    print("Obtida localização do utilizador");
-    //myLat = myPosition.latitude;
-    myLat = 41.5465981;
-    //myLong = myPosition.longitude;
-    myLong = -8.41987;
     _loadMapStyles();
-    await getHoteisProximos();
-    permissionAccepted = true;
 
+    try {
+      Position myPosition = await getMyLocation();
+      myLat = myPosition.latitude;
+      myLong = myPosition.longitude;
+      await getHoteisProximos();
+      permissionAccepted = true;
+    } catch (err) {
+      permissionAccepted = false;
+    }
     Auth auth = Auth.fromJson(box.read("auth"));
     myUsername = auth.username;
 
@@ -115,10 +115,14 @@ class HomeController extends GetxController {
       return Future.error("Por favor, habilite a localização no telemóvel");
     }
 
+    print("cheguei");
     permissao = await Geolocator.checkPermission();
 
+    permissao = LocationPermission.denied;
     if (permissao == LocationPermission.denied) {
+      print("cheguei2");
       permissao = await Geolocator.requestPermission();
+      print("cheguei3");
       if (permissao == LocationPermission.denied) {
         return Future.error("Você precisa autorizar o acesso à localização");
       }
@@ -140,6 +144,19 @@ class HomeController extends GetxController {
       infoWindow: InfoWindow(title: "Mércure", snippet: 'Braga/PT'),
       onTap: () {});
   */
+
+  void questionLocation() async {
+    try {
+      Position myPosition = await getMyLocation();
+      myLat = myPosition.latitude;
+      myLong = myPosition.longitude;
+      await getHoteisProximos();
+      permissionAccepted = true;
+      update();
+    } catch (err) {
+      permissionAccepted = false;
+    }
+  }
 
   List<Hotel> hoteis = <Hotel>[];
 
@@ -212,7 +229,11 @@ class HomeController extends GetxController {
                           ],
                         ),
                         SizedBox(height: 3),
-                        Text("Distância: " + kmToMt(double.parse(hotel.distancia)).toStringAsFixed(1)  + " m",
+                        Text(
+                            "Distância: " +
+                                kmToMt(double.parse(hotel.distancia))
+                                    .toStringAsFixed(1) +
+                                " m",
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 10,
@@ -570,6 +591,17 @@ class HomeController extends GetxController {
           starsChoice,
           evaluationController.text,
         );
+
+        for (var hotel in hoteis) {
+          if (hotel.codEstabelecimento == selectedHotel.codEstabelecimento) {
+            var newMedia = ((double.parse(hotel.stars) * hotel.nEvaluations) +
+                    starsChoice) /
+                (hotel.nEvaluations + 1);
+            hotel.nEvaluations++;
+            hotel.stars = newMedia.toString();
+            update();
+          }
+        }
         Get.defaultDialog(title: "Sucesso", content: Text(message));
         return true;
       } catch (error) {
